@@ -13,12 +13,19 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="pt-BR">
+        <head>
+          <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+        </head>
         <body className={inter.className}>
           <Providers>
-            {children}
+            <div className="bg-gray-50 w-full">
+              <div className="flex items-center justify-center bg-gray-50">
+                {children}
+              </div>
+            </div>
           </Providers>
         </body>
       </html>
     </ClerkProvider>
   )
-} 
+}
