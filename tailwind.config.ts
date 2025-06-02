@@ -13,4 +13,4 @@ const config: Config = {
     require('@tailwindcss/forms'),
   ],
 }
-export default config 
+export default config
