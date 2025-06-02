@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { UserIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { UserButton } from '@clerk/nextjs';
+import { UserButton, SignedIn, SignedOut, SignUpButton, SignInButton } from '@clerk/nextjs';
 
 const navigation = [
   { name: 'Usuários', href: '/users', icon: UserIcon },
@@ -66,7 +66,7 @@ export default function Sidebar() {
           </nav>
 
           <div className="flex items-center justify-between p-4 border-t">
-            <UserButton afterSignOutUrl="/sign-in" />
+            <UserButton />
           </div>
         </div>
       </div>

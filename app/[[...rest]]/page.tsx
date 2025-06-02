@@ -13,7 +13,7 @@ export default function Home() {
 
   return (
     <>
-      <Navbar />
+      <Navbar user={user} />
       <div className="text-center mb-8">
         <HeroSection />
       </div>
