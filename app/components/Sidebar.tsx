@@ -33,7 +33,11 @@ export default function Sidebar() {
       } lg:translate-x-0`}>
         <div className="flex h-full flex-col">
           <div className="flex items-center justify-center h-16 px-4">
-            <h1 className="text-xl font-bold">HR System</h1>
+            <h1 className="text-xl font-bold">SupplyChain</h1>
+          </div>
+
+          <div className="flex items-center justify-between p-4 border-t">
+            <small>Olá, {pathname}</small>
           </div>
 
           <nav className="flex-1 space-y-1 px-2 py-4">
@@ -68,4 +72,4 @@ export default function Sidebar() {
       </div>
     </>
   );
-} 
+}

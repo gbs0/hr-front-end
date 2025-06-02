@@ -8,7 +8,7 @@ export default function Navbar() {
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 justify-between items-center">
           <div className="flex items-center">
-            <h1 className="text-xl font-bold text-gray-900">Hr Sistemas</h1>
+            <h1 className="xtext-xl font-bold text-gray-900">Supply Chain</h1>
           </div>
           <div className="flex items-center">
             {/* <UserButton afterSignOutUrl="/sign-in" /> */}
@@ -17,4 +17,4 @@ export default function Navbar() {
       </div>
     </nav>
   );
-} 
+}
