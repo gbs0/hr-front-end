@@ -34,7 +34,7 @@ async function createRandomUser() {
     email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}@${emailProvider[Math.floor(Math.random() * emailProvider.length)]}.com`,
     password: faker.internet.password({ length: 10 }),
     role: faker.helpers.arrayElement(['colaborador', 'cliente'] as const),
-    phone: faker.phone.number('(##) #####-####'),
+    phone: faker.phone.number(),
   };
 }
 
