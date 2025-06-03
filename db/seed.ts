@@ -9,7 +9,6 @@ import { neon } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 import { pgTable, text, serial } from "drizzle-orm/pg-core";
 
-
 const sql = neon(process.env.DATABASE_URL!);
 
 const db = drizzle(sql, { schema });
@@ -22,18 +21,20 @@ const usersTable = pgTable("users", {
   last_name: text("last_name").notNull(),
   email: text("email").notNull(),
   password: text("password").notNull(),
-  role: text("role").notNull().default("user"),
+  role: text("role").notNull().default("colaborador"),
   phone: text("phone").default("(11) 9****-****"),
 });
 
 async function createRandomUser() {
+  const firstName = faker.person.firstName();
+  const lastName = faker.person.lastName();
   return {
-    first_name: faker.person.firstName(),
-    last_name: faker.person.lastName(),
-    email: `${faker.person.firstName()}.${faker.person.lastName()}@${emailProvider[Math.floor(Math.random() * emailProvider.length)]}.com`,
+    first_name: firstName,
+    last_name: lastName,
+    email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}@${emailProvider[Math.floor(Math.random() * emailProvider.length)]}.com`,
     password: faker.internet.password({ length: 10 }),
-    role: faker.helpers.arrayElement(['user', 'admin'] as const),
-    phone: faker.phone.number('(11) 9####-####'),
+    role: faker.helpers.arrayElement(['colaborador', 'cliente'] as const),
+    phone: faker.phone.number('(##) #####-####'),
   };
 }
 
