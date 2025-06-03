@@ -13,6 +13,8 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Dialog } from '@headlessui/react';
 import { userSchema, type UserFormData } from '@/app/lib/validations/user';
 import { z } from 'zod';
+import toast from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 
 type User = {
   id: string;
@@ -41,6 +43,11 @@ const ActionsCell = ({ row }: { row: any }) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
       setIsDeleteOpen(false);
+      toast.success('Usuário excluído com sucesso!');
+    },
+    onError: (error) => {
+      toast.error('Erro ao excluir usuário');
+      console.error('Erro na deleção:', error);
     },
   });
 
@@ -62,10 +69,12 @@ const ActionsCell = ({ row }: { row: any }) => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
       setIsEditOpen(false);
       setValidationErrors({});
+      toast.success('Usuário atualizado com sucesso!');
     },
     onError: (error) => {
       console.error('Erro na atualização:', error);
       setValidationErrors({ submit: error.message });
+      toast.error('Erro ao atualizar usuário');
     },
   });
 
@@ -77,7 +86,7 @@ const ActionsCell = ({ row }: { row: any }) => {
       first_name: formData.get('first_name') as string,
       last_name: formData.get('last_name') as string,
       email: formData.get('email') as string,
-      role: formData.get('role') as 'user' | 'admin',
+      role: formData.get('role') as 'colaborador' | 'cliente',
       phone: formData.get('phone') as string,
     };
 
@@ -177,8 +186,8 @@ const ActionsCell = ({ row }: { row: any }) => {
                     defaultValue={row.original.role}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                   >
-                    <option value="user">Usuário</option>
-                    <option value="admin">Administrador</option>
+                    <option value="colaborador">Colaborador</option>
+                    <option value="cliente">Cliente</option>
                   </select>
                   {validationErrors.role && (
                     <p className="mt-1 text-sm text-red-600">{validationErrors.role}</p>
@@ -215,7 +224,7 @@ const ActionsCell = ({ row }: { row: any }) => {
                 </button>
                 <button
                   type="submit"
-                  className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+                  className="rounded-md bg-[#6C47FF] px-4 py-2 text-sm font-medium text-white hover:bg-[#5835FF]"
                 >
                   Salvar
                 </button>
@@ -320,13 +329,21 @@ export default function UserTable() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
-      if (!response.ok) throw new Error('Erro ao criar usuário');
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Erro ao criar usuário');
+      }
       return response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
       setIsCreateOpen(false);
       setValidationErrors({});
+      toast.success('Usuário criado com sucesso!');
+    },
+    onError: (error) => {
+      console.error('Erro na criação:', error);
+      toast.error('Erro ao criar usuário');
     },
   });
 
@@ -338,7 +355,7 @@ export default function UserTable() {
       last_name: formData.get('last_name') as string,
       email: formData.get('email') as string,
       password: formData.get('password') as string,
-      role: formData.get('role') as 'user' | 'admin',
+      role: formData.get('role') as 'colaborador' | 'cliente',
       phone: formData.get('phone') as string,
     };
 
@@ -391,6 +408,7 @@ export default function UserTable() {
 
   return (
     <div className="h-full flex flex-col">
+      <Toaster position="top-right" />
       <div className="px-4 sm:px-6 lg:px-8 flex-grow">
         <div className="sm:flex sm:items-center">
           <div className="sm:flex-auto">
@@ -403,7 +421,7 @@ export default function UserTable() {
             <button
               type="button"
               onClick={() => setIsCreateOpen(true)}
-              className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
+              className="inline-flex items-center justify-center rounded-md border border-transparent bg-[#6C47FF] px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-[#5835FF] focus:outline-none focus:ring-2 focus:ring-[#6C47FF] focus:ring-offset-2 sm:w-auto"
             >
               <PlusIcon className="h-5 w-5 mr-2" />
               Novo Usuário
@@ -414,7 +432,7 @@ export default function UserTable() {
         <div className="mt-8 flex flex-col flex-grow">
           <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 align-middle">
-              <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+              <div className="overflow-hidden shadow sm:rounded-lg">
                 <table className="min-w-full divide-y divide-gray-300">
                   <thead className="bg-gray-50">
                     {table.getHeaderGroups().map(headerGroup => (
@@ -582,8 +600,8 @@ export default function UserTable() {
                     name="role"
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                   >
-                    <option value="user">Usuário</option>
-                    <option value="admin">Administrador</option>
+                    <option value="colaborador">Colaborador</option>
+                    <option value="cliente">Cliente</option>
                   </select>
                   {validationErrors.role && (
                     <p className="mt-1 text-sm text-red-600">{validationErrors.role}</p>
@@ -616,7 +634,7 @@ export default function UserTable() {
                 </button>
                 <button
                   type="submit"
-                  className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
+                  className="rounded-md bg-[#6C47FF] px-4 py-2 text-sm font-medium text-white hover:bg-[#5835FF]"
                 >
                   Criar
                 </button>

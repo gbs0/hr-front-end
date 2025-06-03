@@ -14,7 +14,7 @@ export default function Navbar(
             <h1 className="xtext-xl font-bold text-gray-900">Supply Chain</h1>
           </div>
           <div className="flex items-center justify-items-end">
-            <a className="ml-4 no-underline" href="/cadastrar">
+            <a className="ml-4 no-underline" href="/cadastro/">
             { !user && (
               <button className="bg-white hover:bg-gray-100 text-gray-800 font-semibold btn-sm py-2 px-4 border border-gray-400 rounded shadow">
                 Cadastre-se
@@ -22,7 +22,7 @@ export default function Navbar(
             )
             }
             { user && (
-              <SignOutButton />
+              <SignOutButton >Sair</SignOutButton>
             )
             }
             </a>
