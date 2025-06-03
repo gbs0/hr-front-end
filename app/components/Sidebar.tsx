@@ -5,14 +5,17 @@ import { UserIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { UserButton, SignedIn, SignedOut, SignUpButton, SignInButton } from '@clerk/nextjs';
+import { useUser, useAuth } from "@clerk/nextjs";
 
 const navigation = [
-  { name: 'Usuários', href: '/users', icon: UserIcon },
+  { name: 'Usuários', href: '/dashboard/', icon: UserIcon },
 ];
 
 export default function Sidebar() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const pathname = usePathname();
+  const { user } = useUser();
+  const { signOut } = useAuth();
 
   return (
     <>
@@ -37,7 +40,7 @@ export default function Sidebar() {
           </div>
 
           <div className="flex items-center justify-between p-4 border-t">
-            <small>Olá, {pathname}</small>
+            <small>Olá, {user?.firstName}!</small>
           </div>
 
           <nav className="flex-1 space-y-1 px-2 py-4">
@@ -66,7 +69,12 @@ export default function Sidebar() {
           </nav>
 
           <div className="flex items-center justify-between p-4 border-t">
-            <UserButton />
+          <button
+              onClick={() => signOut()}
+              className="px-4 py-2 text-dark outline rounded hover:cursor-pointer"
+            >
+              Sair
+            </button>
           </div>
         </div>
       </div>
