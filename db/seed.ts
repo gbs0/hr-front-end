@@ -7,15 +7,14 @@ configDotenv({ path: `.env.local`, override: true });
 import * as schema from "@/db/schema";
 import { neon } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
-import { seed } from "drizzle-seed";
 import { pgTable, text, serial } from "drizzle-orm/pg-core";
-import { users } from "./schema";
+
 
 const sql = neon(process.env.DATABASE_URL!);
 
 const db = drizzle(sql, { schema });
 
-const userPassword = process.env.USER_PASSWORD;
+const emailProvider = ["hotmail", "live", "outlook", "gmail", "bol", "supplychain"]
 
 const usersTable = pgTable("users", {
   id: serial("id").primaryKey(),
@@ -31,10 +30,10 @@ async function createRandomUser() {
   return {
     first_name: faker.person.firstName(),
     last_name: faker.person.lastName(),
-    email: faker.internet.email(),
+    email: `${faker.person.firstName()}.${faker.person.lastName()}@${emailProvider[Math.floor(Math.random() * emailProvider.length)]}.com`,
     password: faker.internet.password({ length: 10 }),
     role: faker.helpers.arrayElement(['user', 'admin'] as const),
-    phone: faker.phone.number('(##) #####-####'),
+    phone: faker.phone.number('(11) 9####-####'),
   };
 }
 
