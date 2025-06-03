@@ -5,7 +5,7 @@ export const userSchema = z.object({
   last_name: z.string().min(2, 'Sobrenome deve ter no mínimo 2 caracteres'),
   email: z.string().email('Email inválido'),
   password: z.string().min(6, 'Senha deve ter no mínimo 6 caracteres'),
-  role: z.enum(['user', 'admin']).default('user'),
+  role: z.enum(['colaborador', 'cliente']).default('colaborador'),
   phone: z.string().optional(),
 });
 
